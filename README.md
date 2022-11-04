@@ -9,6 +9,7 @@ With this tool you can quickly and easily adjust `pxrange` `size` and see how it
 
 ## CREDITS
 
-[TabularElf](https://tabularelf.com/) for help with getting the msdf-atlas-gen to run as well as many other important facets of this tool
-[Juju Adams](https://github.com/JujuAdams) for his incredible tool [Scribble](https://github.com/JujuAdams/Scribble) for which this project was designed for use with!
-[Samuel Venable](https://samuel-venable.itch.io) for his amazing [execute_shell](https://samuel-venable.itch.io/gamemaker-extension-collection) extensions among others!
+- [TabularElf](https://tabularelf.com/) for help with getting the msdf-atlas-gen to run as well as many other important facets of this tool
+- [Juju Adams](https://github.com/JujuAdams) for his incredible tool [Scribble](https://github.com/JujuAdams/Scribble) for which this project was designed for use with!
+- [Samuel Venable](https://samuel-venable.itch.io) for his amazing [execute_shell](https://samuel-venable.itch.io/gamemaker-extension-collection) extensions among others!
+- [Clumsky](https://github.com/Chlumsky/msdf-atlas-gen/releases/tag/v1.1) for making this incredible MSDF font generator!
