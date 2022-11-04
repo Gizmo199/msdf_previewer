@@ -1,5 +1,3 @@
-# msdf_previewer
-An MSDF font previewer
 ![Capture](https://user-images.githubusercontent.com/25496262/200073440-01fbebea-7175-4fbe-94c6-42f24ae8cd41.PNG)
 
 ## Versions
