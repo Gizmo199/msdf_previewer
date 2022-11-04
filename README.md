@@ -3,9 +3,9 @@ An MSDF font previewer
 ![Capture](https://user-images.githubusercontent.com/25496262/200073440-01fbebea-7175-4fbe-94c6-42f24ae8cd41.PNG)
 
 ## Versions
-MSDF Generator v 1.1 - https://github.com/Chlumsky/msdf-atlas-gen/releases/tag/v1.1
-Scribble 8.0.9 - https://github.com/JujuAdams/Scribble
-
+- MSDF Generator v 1.1 - https://github.com/Chlumsky/msdf-atlas-gen/releases/tag/v1.1
+- Scribble 8.0.9 - https://github.com/JujuAdams/Scribble
+- `execute_shell()` x64 - https://samuel-venable.itch.io/gamemaker-extension-collection 
 ## Use
 
 With this previewer you can simple import the `.ttf`fonts that you want to convert to an MSDF, change settings, and export the .png files and .json files! 
