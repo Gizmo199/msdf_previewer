@@ -1,13 +1,14 @@
 ![Capture](https://user-images.githubusercontent.com/25496262/200073440-01fbebea-7175-4fbe-94c6-42f24ae8cd41.PNG)
 
+## About
+
+With this previewer you can simple import the `.ttf`fonts that you want to convert to an MSDF, change settings, and export the .png files and .json files! 
+With this tool you can quickly and easily adjust `pxrange` `size` and see how it looks within scribble! Each font is unique in what values are required to get the best results.
+
 ## Versions
 - MSDF Generator v 1.1 - https://github.com/Chlumsky/msdf-atlas-gen/releases/tag/v1.1
 - Scribble 8.0.9 - https://github.com/JujuAdams/Scribble
 - `execute_shell()` x64 - https://samuel-venable.itch.io/gamemaker-extension-collection 
-## Use
-
-With this previewer you can simple import the `.ttf`fonts that you want to convert to an MSDF, change settings, and export the .png files and .json files! 
-With this tool you can quickly and easily adjust `pxrange` `size` and see how it looks within scribble! Each font is unique in what values are required to get the best results.
 
 ## Credits
 
