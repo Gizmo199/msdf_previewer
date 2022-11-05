@@ -1,1 +1,0 @@
-if ( func != noone ) func();
