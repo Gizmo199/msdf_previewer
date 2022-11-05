@@ -91,21 +91,11 @@ function msdf_generator(init_data={}) constructor{
             
             if ( position == undefined ){
                 var font = ind;
-                font.button = instance_create_layer(room_width - 119, 16+ ( (array_length(msdf)+1) * 32), "Buttons", obj_button);
-                font.button.image_yscale = .5;
-                font.button.image_xscale = -3;
-                font.button.text = font.name;
-                font.button.fontname = "["+font.name+"]";
-                font.button.func = method(font.button, function(){
-                    on = true;
-                    Main.font = fontname;
-                    
-                    with ( obj_button ){
-                        if (variable_instance_exists(id, "fontname") && Main.font != fontname ) on = false;
-                    }
-                    
-                });
-                font.button.func();
+                font.button = {
+                    fontname : "["+font.name+"]",
+                    text     : font.name,
+                }
+                Main.font = "["+font.name+"]";
                 array_push(msdf, ind);
             }
         }
