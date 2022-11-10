@@ -70,7 +70,6 @@ function msdf_generator(init_data={}) constructor{
                     break;
                 }
             }
-            show_debug_message(arr[i]);
             generate(font_name, arr[i]);
             
             var path    = working_directory + "png/"+font_name+".png";

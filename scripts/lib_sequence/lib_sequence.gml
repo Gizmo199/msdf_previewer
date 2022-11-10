@@ -148,6 +148,10 @@ function ui_element() constructor {
 };
 function ui_element_text() : ui_element() constructor {
     
+    enable_textbox = false;
+    textbox_color  = c_white;
+    textbox_alpha  = 1;
+    
     static bbox_update=function()/*=>*/{
         var size = {x: string_width(text), y: string_height(text)};
         if ( align.x == fa_center ){
@@ -190,7 +194,7 @@ function ui_element_text() : ui_element() constructor {
         if ( !ent && entered ) {
             on_enter();
         }
-        if ( entered && mouse_check_button_pressed(mb_left) ){ on_click(); }
+        if ( entered && mouse_check_button_pressed(mb_left) ){ on_click(); bbox_update(); }
         on_update();
         
         for ( var i=0; i<array_length(elements); i++ ){
@@ -199,6 +203,11 @@ function ui_element_text() : ui_element() constructor {
     }
     static draw=function()/*=>*/{
         if ( text != "" ){
+            if ( enable_textbox ){
+                draw_set_color(is_array(textbox_color) ? textbox_color[entered] : textbox_color);
+                draw_set_alpha(is_array(textbox_alpha) ? textbox_alpha[entered] : textbox_alpha);
+                draw_rectangle(bbox.left-2, bbox.top-2, bbox.right, bbox.bottom, false);
+            }
             draw_set_font(font);
             draw_set_halign(align.x);
             draw_set_valign(align.y);
@@ -240,7 +249,7 @@ function ui_element_sprite() : ui_element() constructor {
         if ( !ent && entered ) {
             on_enter();
         }
-        if ( entered && mouse_check_button_pressed(mb_left) ){ on_click(); }
+        if ( entered && mouse_check_button_pressed(mb_left) ){ on_click(); bbox_update(); }
         on_update();
         
         for ( var i=0; i<array_length(elements); i++ ){

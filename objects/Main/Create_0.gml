@@ -16,13 +16,18 @@ button_apply=function(button_path, button_description, button_function)/*=>*/{
     var button = button_path;
     if ( button == undefined ) return;
     button.desc = button_description;
+    button.enable_textbox = true;
+    button.textbox_color  = [ c_white, #3CB878 ];
+    button.textbox_alpha  = [ 0.2, 0.5 ];
+    
     
     with ( button ){
-        on_click = button_function;
+        on_click = method(button, button_function);
         on_update= method(button, function(){ if ( entered ) {SCREEN.description.text = desc;} });
+        button.bbox_update();
     }
 }
-button_apply(screen.button_import.import, "Import", function(){ import = !import });
+button_apply(screen.button_import.import, "Import", function(){ Main.import = !Main.import });
 button_apply(screen.button_gradient.gradient, "Gradient", function(){ MSDF.gradient = !MSDF.gradient; });
 button_apply(screen.button_shadow.shadow, "Shadow", function(){ MSDF.shadow = !MSDF.shadow;});
 button_apply(screen.button_border.border, "Border", function(){ MSDF.border = !MSDF.border;});
@@ -85,16 +90,17 @@ with ( screen.display ){
             text_editor= new ui_screen({sequence: seq_popup_text, x: room_width - 280, y: 76});
             with ( text_editor.container ){
                 
-                // Mains
-                on_update = method(self, Main.apply_movement);
+                color_value.color = TEXT.color;
+                text_value.text   = TEXT.text; 
+                font_value.text   = "import fonts";
                 
-                // Values
-                color_value.on_click = method(color_value, function(){
+                on_update = method(self, Main.apply_movement);
+                Main.button_apply(color_value, "Change text color", function(){
                     TEXT.color = get_color(TEXT.color);
                     color = TEXT.color;
                     mouse_clear(mb_left);
                 });
-                text_value.on_click = method(text_value, function(){
+                Main.button_apply(text_value, "Change display text", function(){
                     TEXT.text = get_string("Text", TEXT.text);
                     
                     var cont = "";
@@ -103,21 +109,29 @@ with ( screen.display ){
                     text = string_copy(string(TEXT.text), 1, len) + cont;
                     mouse_clear(mb_left);
                 });
+                Main.button_apply(font_value, "Change display font", function(){
+                    if ( array_length(options) > 0 ) {
+                        open = !open; mouse_clear(mb_left);
+                    }
+                });
+                
+                // Dropdown
                 with ( font_value ){
                     
                     clicked = false;
                     options = [];
                     og_draw = draw;
+                    og_step = on_update;
                     open    = false;
-
+                    
                     update_options=method(self,function(){
                         options = [];
                         for ( var i=0; i<array_length(MSDF.msdf); i++){
                             options[i] = MSDF.msdf[i].button;
                         }
                     })
-                    on_click = method(self, function(){ if ( array_length(options) > 0 ) {open = !open; mouse_clear(mb_left);}});
                     on_update = method(self, function(){
+                        og_step();
                         for ( var i=0; i<array_length(options); i++ ){
                             if ( Main.font == options[i].fontname ) text = options[i].text;
                         }
@@ -166,8 +180,8 @@ with ( screen.display ){
             import_popup = new ui_screen({sequence: seq_popup_import, x: room_width*.5, y: room_height*.5});
             with ( import_popup.container ){
                 
-                pxrange_value.text = MSDF.pxrange;
-                size_value.text = MSDF.size;
+                pxrange_value.text  = MSDF.pxrange;
+                size_value.text     = MSDF.size;
                 
                 // Mains
                 on_update = method(self, Main.apply_movement);
@@ -183,20 +197,21 @@ with ( screen.display ){
                 });
                 
                 // Values
-                size_value.on_click = method(size_value, function(){
+                Main.button_apply(size_value, "Change import font size", function(){
                     MSDF.size = max(1, get_integer("Import size", MSDF.size));
                     text = string(MSDF.size);
                     mouse_clear(mb_left);
                 });
-                pxrange_value.on_click = method(pxrange_value, function(){
+                Main.button_apply(pxrange_value, "Change import pixel range",  function(){
                     MSDF.pxrange = get_integer("Pixel Range", MSDF.pxrange);
                     text = string(MSDF.pxrange);
                     mouse_clear(mb_left);
                 });
-                button_import.on_click = method(button_import, function(){
+                Main.button_apply(button_import, "Import font(s)", function(){
                     MSDF.import(); 
                     TEXT.text_editor.container.font_value.update_options();
                     TEXT.import_popup.container.close.on_click();
+                    mouse_clear(mb_left);
                 })
             }
             array_push(SCREEN.elements, import_popup);
@@ -207,9 +222,12 @@ with ( screen.display ){
             border.popup = new ui_screen({sequence: seq_popup_border, x: 128, y: 128});
             with ( border.popup.container ){
                 
+                color_value.color    = TEXT.border.color;
+                thickness_value.text = string(TEXT.border.thickness);
+                
                 // Mains
                 on_update = method(self, Main.apply_movement);
-                close.on_click = method(close, function(){
+                Main.button_apply(close, "Close & disable border options", function(){
                     for ( var i=0; i<array_length(SCREEN.elements); i++ ){
                         if ( SCREEN.elements[i] == TEXT.border.popup ){
                             array_delete(SCREEN.elements, i, 1);
@@ -219,14 +237,12 @@ with ( screen.display ){
                         }
                     }
                 });
-                
-                // Values
-                color_value.on_click = method(color_value, function(){
+                Main.button_apply(color_value, "Change border color", function(){
                     TEXT.border.color = get_color(TEXT.border.color);
                     color = TEXT.border.color;
                     mouse_clear(mb_left);
                 });
-                thickness_value.on_click = method(thickness_value, function(){
+                Main.button_apply(thickness_value, "Change border thickness", function(){
                     TEXT.border.thickness = get_integer("Thickness", TEXT.border.thickness);
                     text = string(TEXT.border.thickness);
                     mouse_clear(mb_left);
@@ -240,9 +256,12 @@ with ( screen.display ){
             gradient.popup = new ui_screen({sequence: seq_popup_gradient, x: 128, y: 224});
             with ( gradient.popup.container ){
                 
+                color_value.color = TEXT.gradient.color;
+                alpha_value.text  = string(TEXT.gradient.falloff);
+                
                 // Mains
                 on_update = method(self, Main.apply_movement);
-                close.on_click = method(close, function(){
+                Main.button_apply(close, "Close & disable graident options", function(){
                     for ( var i=0; i<array_length(SCREEN.elements); i++ ){
                         if ( SCREEN.elements[i] == TEXT.gradient.popup ){
                             array_delete(SCREEN.elements, i, 1);
@@ -254,12 +273,12 @@ with ( screen.display ){
                 });
                 
                 // Values
-                color_value.on_click = method(color_value, function(){
+                Main.button_apply(color_value, "Change gradient bottom color", function(){
                     TEXT.gradient.color = get_color(TEXT.gradient.color);
                     color = TEXT.gradient.color;
                     mouse_clear(mb_left);
                 });
-                alpha_value.on_click = method(alpha_value, function(){
+                Main.button_apply(alpha_value, "Change gradient falloff value", function(){
                     TEXT.gradient.falloff = get_integer("Falloff", TEXT.gradient.falloff);
                     text = string(TEXT.gradient.falloff);
                     mouse_clear(mb_left);
@@ -273,9 +292,13 @@ with ( screen.display ){
             shadow.popup = new ui_screen({sequence: seq_popup_shadow, x: 128, y: 320});
             with ( shadow.popup.container ){
                 
+                color_value.color = TEXT.shadow.color;
+                alpha_value.text  = string(TEXT.shadow.alpha);
+                smooth_value.text = string(TEXT.shadow.smooth);
+                
                 // Mains
                 on_update = method(self, Main.apply_movement);
-                close.on_click = method(close, function(){
+                Main.button_apply(close, "Close & disable shadow options", function(){
                     for ( var i=0; i<array_length(SCREEN.elements); i++ ){
                         if ( SCREEN.elements[i] == TEXT.shadow.popup ){
                             array_delete(SCREEN.elements, i, 1);
@@ -287,18 +310,18 @@ with ( screen.display ){
                 });
                 
                 // Values
-                color_value.on_click = method(color_value, function(){
+                Main.button_apply(color_value, "Change shadow color", function(){
                     TEXT.shadow.color = get_color(TEXT.shadow.color);
                     color = TEXT.shadow.color;
                     mouse_clear(mb_left);
                 });
-                alpha_value.on_click = method(alpha_value, function(){
+                Main.button_apply(alpha_value, "Change shadow alpha", function(){
                     TEXT.shadow.alpha = get_integer("Alpha", TEXT.shadow.alpha);
                     text = string(TEXT.shadow.alpha);
                     mouse_clear(mb_left);
                 });
-                smooth_value.on_click = method(smooth_value, function(){
-                    TEXT.shadow.smooth = get_integer("Alpha", TEXT.shadow.smooth);
+                Main.button_apply(smooth_value, "Change shadow smoothness", function(){
+                    TEXT.shadow.smooth = get_integer("Smoothness", TEXT.shadow.smooth);
                     text = string(TEXT.shadow.smooth);
                     mouse_clear(mb_left);
                 })
@@ -309,7 +332,7 @@ with ( screen.display ){
         font = Main.font;
         size_string = "";
         
-        if ( mouse_check_button(mb_middle) ) {
+        if ( mouse_check_button(mb_right) ) {
             var dis = point_distance(mouse_x, mouse_y, Main.mouse_xprevious, Main.mouse_yprevious);
             var dir = point_direction(Main.mouse_xprevious, Main.mouse_yprevious, mouse_x, mouse_y);
             x += lengthdir_x(dis, dir);
