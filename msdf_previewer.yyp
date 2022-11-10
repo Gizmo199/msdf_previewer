@@ -114,10 +114,11 @@
     {"id":{"name":"scribble_font_has_character","path":"scripts/scribble_font_has_character/scribble_font_has_character.yy",},"order":10,},
     {"id":{"name":"scribble_external_sound_exists","path":"scripts/scribble_external_sound_exists/scribble_external_sound_exists.yy",},"order":1,},
     {"id":{"name":"rm_run","path":"rooms/rm_run/rm_run.yy",},"order":0,},
-    {"id":{"name":"lib_msdf","path":"scripts/lib_msdf/lib_msdf.yy",},"order":0,},
+    {"id":{"name":"lib_msdf","path":"scripts/lib_msdf/lib_msdf.yy",},"order":1,},
     {"id":{"name":"libdlgmodule","path":"extensions/libdlgmodule/libdlgmodule.yy",},"order":0,},
     {"id":{"name":"Main","path":"objects/Main/Main.yy",},"order":1,},
-    {"id":{"name":"lib_sequence","path":"scripts/lib_sequence/lib_sequence.yy",},"order":1,},
+    {"id":{"name":"lib_sequence","path":"scripts/lib_sequence/lib_sequence.yy",},"order":2,},
+    {"id":{"name":"lib_charset","path":"scripts/lib_charset/lib_charset.yy",},"order":0,},
   ],
   "Options": [
     {"name":"Android","path":"options/android/options_android.yy",},
