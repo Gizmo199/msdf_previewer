@@ -42,20 +42,23 @@ function msdf_generator(init_data={}) constructor{
         
         var fname = get_open_filenames("TTF file|*.ttf", "");
         if ( fname == "" ) return;
-        clipboard_set_text(fname);
-        
+
         var arr = [];
-        var txt = fname;
-        var pos = 0;
-        repeat(1000){
-            pos = string_pos(".ttf", txt) + 3;
-            array_push(arr, string_copy(txt, 1, pos));
-            txt = string_copy(txt, pos+2, string_length(txt));
-            if ( txt == "" ) break;
+        var txt = string_replace_all(fname, ".ttf", ".ttf|");
+        txt = string_replace_all(txt, " ", "");
+        var t = "";
+        for ( var i=1; i<string_length(txt)+1; i++){
+            var char = string_char_at(txt, i);
+            if ( char == "|"){
+                array_push(arr, t);
+                t = "";
+                i++;
+                continue;
+            }
+            t+=char;
         }
         
         for ( var i=0; i<array_length(arr); i++ ){
-            if ( arr[i] == "xxx" ) return;
             var font_name = string_replace_all(filename_name(arr[i]), ".ttf", "");
             Main.size = size;
             
